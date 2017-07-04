@@ -1,0 +1,17 @@
+table {
+    border-top: 1px solid #dfdfdf;
+}
+
+th {
+    vertical-align: middle !important;
+}
+
+td > p {
+    font-size: 12px !important;
+    margin-bottom: 10px !important;
+}
+
+.tkgt_slugs li {
+    display: inline-block;
+    margin-right: 10px;
+}

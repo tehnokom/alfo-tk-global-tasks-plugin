@@ -1,0 +1,45 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TehnoKom Global Tasks\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-03 09:10+0000\n"
+"PO-Revision-Date: 2017-07-03 09:11+0000\n"
+"Last-Translator: Равиль <ra9oaj@mail.ru>\n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/"
+
+#: tk-global-tasks.php:44
+msgctxt "Admin menu"
+msgid "TK Global Tasks Settings"
+msgstr ""
+
+#: tk-global-tasks.php:45
+msgctxt "Admin menu"
+msgid "Global Tasks"
+msgstr ""
+
+#. Name of the plugin
+msgid "TehnoKom Global Tasks"
+msgstr ""
+
+#. Description of the plugin
+msgid "Allows you to create a task plan for certain types of posts."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://github.com/tehnokom/alfo-tk-global-tasks-plugin"
+msgstr ""
+
+#. Author of the plugin
+msgid "Ravil Sarvaritdinov <ra9oaj@gmail.com>"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://github.com/RA9OAJ/"
+msgstr ""
