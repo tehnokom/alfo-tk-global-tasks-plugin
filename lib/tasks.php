@@ -15,7 +15,7 @@ class TK_GTasks
 {
     protected $wpdb;
 
-    protected $project;
+    protected $post;
 
     protected $max_tasks;
 
@@ -27,22 +27,22 @@ class TK_GTasks
 
     protected $status_list;
 
-    public function __construct($project_id)
+    public function __construct($post_id)
     {
-        $this->project = new TK_GProject($project_id);
+        $this->post = get_post($post_id);
 
-        if($this->project->isValid() && $this->project->userCanRead(get_current_user_id())) {
+        if(!empty($this->post)) {
             global $wpdb;
 
             $this->wpdb = $wpdb;
             $this->wpdb->enable_nulls = true;
         } else {
-            $this->project = null;
+            $this->post = null;
         }
     }
 
     public function isValid() {
-        return !($this->project === null);
+        return !($this->post === null);
     }
 
     public function setStatuses($status = array()) {
@@ -83,8 +83,8 @@ INNER JOIN `{$this->wpdb->prefix}tkgp_tasks_links` ll ON (ll.child_id = tt.id AN
 WHERE tt.post_id = %d
 AND tt.status {$this->status_list}) o
 ORDER BY o.`internal_id` ASC;",
-                intval($this->project->project_id),
-                intval($this->project->project_id));
+                intval($this->post->ID),
+                intval($this->post->ID));
 
             $res = $this->wpdb->get_results($sql, ARRAY_A);
 

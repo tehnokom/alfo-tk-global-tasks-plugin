@@ -162,16 +162,16 @@ class TK_GTask
 
     /**
      * Creates a new Task for a Project
-     * @param int $project_id
+     * @param int $post_id
      * @param array $data
      * @param null|int $parent_id
      * @return null|TK_GTask
      */
-    public static function createTask($project_id, $data, $parent_id = null)
+    public static function createTask($post_id, $data, $parent_id = null)
     {
-        $project = new TK_GProject($project_id);
+        $post = get_post($post_id);
 
-        if ($project->isValid() && is_array($data)) {
+        if (!empty($post) && in_array($post->post_type, self::taskSettings()['enabled_for']) && is_array($data)) {
             $check_res = self::checkFields($data);
             $fields = $check_res['fields'];
             $field_type = $check_res['types'];
@@ -180,13 +180,13 @@ class TK_GTask
                 global $wpdb;
                 $wpdb->enable_nulls = true;
 
-                $fields['post_id'] = $project_id;
+                $fields['post_id'] = $post_id;
                 $field_type[] = '%d';
                 $res = $wpdb->insert("{$wpdb->prefix}tkgp_tasks", $fields, $field_type);
 
                 if ($res) {
                     $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}tkgp_tasks 
-WHERE post_id = %d AND title = %s", $project_id, $fields['title']);
+WHERE post_id = %d AND title = %s", $post_id, $fields['title']);
 
                     $task_id = $wpdb->get_var($query);
                     $task = new TK_GTask($task_id);
@@ -282,6 +282,28 @@ ORDER BY o.`internal_id`;",
         }
 
         return $out;
+    }
+
+    static function taskSettings($out_object = false)
+    {
+        $settings = get_option('tkgt_settings');
+
+        if(!is_array($settings)) {
+            $settings = array(
+                'slug' => 'tasks',
+                'enabled_for' => null
+            );
+        } else {
+            if(empty($settings['slug'])) {
+                $settings['slug'] = 'tasks';
+            }
+
+            if(empty($settings['enabled_for'])) {
+                $settings['enabled_for'] = null;
+            }
+        }
+
+        return ($out_object ? (object)$settings : $settings);
     }
 }
 

@@ -11,6 +11,8 @@
  * @link https://github.com/tehnokom/alfo-tk-global-tasks-plugin
  */
 
+require_once(ABSPATH . 'wp-admin/includes/template.php');
+
 function tkgt_add_options()
 {
     add_settings_section('tkgt_general_section',
@@ -40,38 +42,38 @@ function tkgt_add_options()
 
 function tkgt_get_post_type()
 {
-    $enabled_slugs = get_option('tkgt_settings')['enabled_for'];
+    $enabled_slugs = TK_GTask::taskSettings(true)->enabled_for;
     ?>
     <p>
         <?php echo _x('Select the types of posts for which the task plan will be available',
             'Admin Settings', 'tkgt') ?>:
     </p>
     <ul class="tkgt_slugs">
-    <?php
-    $post_slugs = get_post_types();
-    foreach ($post_slugs as $slug) {
-        $checked = in_array($slug, $enabled_slugs) ? 'checked="on"' : '';
-        ?>
-        <li>
-            <input id="tkgt_slug_<?php echo $slug ?>" name="tkgt_settings[enabled_for][<?php echo $slug ?>]"
-                type="checkbox" <?php echo $checked ?>>
-            <label for="tkgt_slug_<?php echo $slug ?>"><?php echo $slug ?></label>
-        </li>
         <?php
-    }
-    ?>
+        $post_slugs = get_post_types();
+        foreach ($post_slugs as $slug) {
+            $checked = in_array($slug, $enabled_slugs) ? 'checked="on"' : '';
+            ?>
+            <li>
+                <input id="tkgt_slug_<?php echo $slug ?>" name="tkgt_settings[enabled_for][<?php echo $slug ?>]"
+                       type="checkbox" <?php echo $checked ?>>
+                <label for="tkgt_slug_<?php echo $slug ?>"><?php echo $slug ?></label>
+            </li>
+            <?php
+        }
+        ?>
     </ul>
     <?php
 }
 
 function tkgt_get_tasks_slug()
 {
-    $cur_slug = get_option('tkgt_settings')['slug'];
+    $cur_slug = TK_GTask::taskSettings(true)->slug;
     $cur_slug = empty($cur_slug) ? '/tasks' : $cur_slug;
     ?>
     <code><?php echo home_url() ?>/%permalink%</code>
     <input id="tkgt_tasks_slug" name="tkgt_settings[slug]" type="text" value="<?php echo esc_url($cur_slug) ?>">
-<?php
+    <?php
 }
 
 function tkgt_check_options($options)
@@ -79,7 +81,7 @@ function tkgt_check_options($options)
     $valid = array();
 
     foreach ($options as $opt => $item) {
-        if($opt === 'enabled_for' && is_array($item)) {
+        if ($opt === 'enabled_for' && is_array($item)) {
             $valid[$opt] = array_keys($item);
         } else {
             $valid[$opt] = esc_url_raw($item);
