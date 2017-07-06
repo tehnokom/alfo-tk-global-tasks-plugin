@@ -2,44 +2,69 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TehnoKom Global Tasks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-03 09:10+0000\n"
-"PO-Revision-Date: 2017-07-03 09:11+0000\n"
+"POT-Creation-Date: 2017-07-06 07:45+0000\n"
+"PO-Revision-Date: 2017-07-06 07:49+0000\n"
 "Last-Translator: Равиль <ra9oaj@mail.ru>\n"
-"Language-Team: \n"
-"Language: ru_RU\n"
+"Language-Team: Russian\n"
+"Language: ru-RU\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
-"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Loco - https://localise.biz/"
 
-#: tk-global-tasks.php:44
+#: admin/settings.php:16 lib/taskpage.php:40
 msgctxt "Admin menu"
-msgid "TK Global Tasks Settings"
-msgstr ""
+msgid "Tasks Settings"
+msgstr "Настройки Задач"
 
-#: tk-global-tasks.php:45
+#: lib/taskpage.php:32
+msgctxt "Admin menu"
+msgid "TK Global Tasks"
+msgstr "ТК Глобальные задачи"
+
+#: lib/taskpage.php:33
 msgctxt "Admin menu"
 msgid "Global Tasks"
-msgstr ""
+msgstr "Глобальный задачи"
+
+#: lib/taskpage.php:41
+msgctxt "Admin menu"
+msgid "TK Tasks"
+msgstr "ТК Задачи"
+
+#: lib/settings.php:24
+msgctxt "Admin Settings"
+msgid "Tasks Slug"
+msgstr "Слаг страницы задач"
+
+#: lib/settings.php:31
+msgctxt "Admin Settings"
+msgid "Types of Posts"
+msgstr "Типы постов"
+
+#: lib/settings.php:48
+msgctxt "Admin Settings"
+msgid "Select the types of posts for which the task plan will be available"
+msgstr "Выберете типы постов, для которых будут доступны планы задач"
 
 #. Name of the plugin
 msgid "TehnoKom Global Tasks"
-msgstr ""
+msgstr "ТехноКом Глобальные задачи"
 
 #. Description of the plugin
 msgid "Allows you to create a task plan for certain types of posts."
-msgstr ""
+msgstr "Позволяет создавать планы задач для разных типов постов"
 
 #. URI of the plugin
 msgid "https://github.com/tehnokom/alfo-tk-global-tasks-plugin"
-msgstr ""
+msgstr "https://github.com/tehnokom/alfo-tk-global-tasks-plugin"
 
 #. Author of the plugin
 msgid "Ravil Sarvaritdinov <ra9oaj@gmail.com>"
-msgstr ""
+msgstr "Равиль Сарваритдинов <ra9oaj@gmail.com>"
 
 #. Author URI of the plugin
 msgid "http://github.com/RA9OAJ/"
-msgstr ""
+msgstr "http://github.com/RA9OAJ/"

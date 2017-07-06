@@ -3,25 +3,50 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-03 09:10+0000\n"
+"POT-Creation-Date: 2017-07-06 07:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
 "Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: Loco - https://localise.biz/"
 
-#: tk-global-tasks.php:44
+#: admin/settings.php:16 lib/taskpage.php:40
 msgctxt "Admin menu"
-msgid "TK Global Tasks Settings"
+msgid "Tasks Settings"
 msgstr ""
 
-#: tk-global-tasks.php:45
+#: lib/taskpage.php:32
+msgctxt "Admin menu"
+msgid "TK Global Tasks"
+msgstr ""
+
+#: lib/taskpage.php:33
 msgctxt "Admin menu"
 msgid "Global Tasks"
+msgstr ""
+
+#: lib/taskpage.php:41
+msgctxt "Admin menu"
+msgid "TK Tasks"
+msgstr ""
+
+#: lib/settings.php:24
+msgctxt "Admin Settings"
+msgid "Tasks Slug"
+msgstr ""
+
+#: lib/settings.php:31
+msgctxt "Admin Settings"
+msgid "Types of Posts"
+msgstr ""
+
+#: lib/settings.php:48
+msgctxt "Admin Settings"
+msgid "Select the types of posts for which the task plan will be available"
 msgstr ""
 
 #. Name of the plugin
