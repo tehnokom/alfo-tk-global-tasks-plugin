@@ -13,13 +13,18 @@
 
 class TK_GTaskPage
 {
-    public function __construct($post_id)
+    private $template_dir;
+
+    public function __construct($post_id = null)
     {
         add_action('init', array($this, 'init'));
         add_action('admin_menu', array($this, 'addAdminMenu'));
         add_action('admin_enqueue_scripts', array($this, 'regJS_CSS'));
         add_action('wp_enqueue_scripts', array($this, 'regJS_CSS'));
         add_action('template_redirect', array($this, 'checkPage'));
+        add_filter('tkgt_tasks_list', array($this, 'getTasksHtml'), 10, 1);
+
+        $this->template_dir = array('template' => TEMPLATEPATH . '/tkgt_template/');
     }
 
     public function init()
@@ -56,6 +61,7 @@ class TK_GTaskPage
         $slug = TK_GTask::taskSettings(true)->slug;
 
         add_rewrite_tag('%tkgt_page%', '([^&]+)');
+        add_rewrite_tag('%tkgt_t%', '([^&]+)');
 
         //WP Posts
         add_rewrite_rule('^([^/]+)/([^/]+)' . $slug . '$',
@@ -88,8 +94,25 @@ class TK_GTaskPage
     public function includeTemplate($template_path)
     {
         if (in_array(get_post_type(), TK_GTask::taskSettings()['enabled_for'])) {
+            global $wp;
+            $native_template = TKGT_ROOT . 'styles/default/page.php';
 
-            $template_path = TKGT_ROOT . 'styles/default/page.php';
+            if(!empty($wp->query_vars['tkgt_t'])) {
+                return $native_template;
+            } else {
+                $dirs = scandir(dirname($template_path));
+                if (in_array('tkgt_template', $dirs)) {
+                    if(substr_count(dirname($template_path), '/wp-content/plugins')) {
+                        $this->template_dir['plugin'] = dirname($template_path) . '/tkgt_template/';
+                    }
+
+                    if (is_file(dirname($template_path) . '/tkgt_template/page.php')) {
+                        return dirname($template_path) . '/tkgt_template/page.php';
+                    }
+                } else {
+                    return $native_template;
+                }
+            }
         }
 
         return $template_path;
@@ -112,6 +135,35 @@ class TK_GTaskPage
         } else {
 
         }
+    }
+
+    protected function getTemplateFor($template_part_name)
+    {
+        $template = TKGT_STYLES_DIR . 'default/' . "$template_part_name.php";
+
+        if(is_file($this->template_dir['plugin'] . "$template_part_name.php")) {
+            $template = $this->template_dir['plugin'] . "$template_part_name.php";
+        } else if(is_file($this->template_dir['template'] . "$template_part_name.php")) {
+            $template = $this->template_dir['template'] . "$template_part_name.php";
+        }
+
+        return $template;
+    }
+
+    public function getTasksHtml($html, $post_id = null)
+    {
+        $template_file = $this->getTemplateFor('tasks');
+
+        if(is_file($template_file)) {
+            ob_start();
+
+            require_once($template_file);
+
+            $html = ob_get_contents();
+            ob_end_clean();
+        }
+
+        return $html;
     }
 
 }

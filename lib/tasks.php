@@ -71,18 +71,18 @@ class TK_GTasks
                 $this->setStatuses();
             }
 
-            $sql = $this->wpdb->prepare("SELECT * FROM (SELECT t.id, t.type, l.parent_id, l.parent_type, t.internal_id 
-FROM `{$this->wpdb->prefix}tkgp_tasks` t 
-LEFT JOIN `{$this->wpdb->prefix}tkgp_tasks_links` l ON (l.child_id = t.id AND l.child_type = t.type) 
+            $sql = $this->wpdb->prepare("SELECT * FROM (SELECT t.id, l.parent_id, t.internal_id 
+FROM `{$this->wpdb->prefix}tkgt_tasks` t 
+LEFT JOIN `{$this->wpdb->prefix}tkgt_tasks_links` l ON (l.child_id = t.id) 
 WHERE t.post_id = %d
 AND t.status {$this->status_list}
 UNION
-SELECT tt.id, tt.type, ll.parent_id, ll.parent_type, tt.internal_id 
-FROM `{$this->wpdb->prefix}tkgp_tasks` tt 
-INNER JOIN `{$this->wpdb->prefix}tkgp_tasks_links` ll ON (ll.child_id = tt.id AND ll.child_type = tt.type) 
+SELECT tt.id, ll.parent_id, tt.internal_id 
+FROM `{$this->wpdb->prefix}tkgt_tasks` tt 
+INNER JOIN `{$this->wpdb->prefix}tkgt_tasks_links` ll ON (ll.child_id = tt.id) 
 WHERE tt.post_id = %d
 AND tt.status {$this->status_list}) o
-ORDER BY o.`internal_id` ASC;",
+ORDER BY o.`parent_id` ASC, o.`internal_id` ASC;",
                 intval($this->post->ID),
                 intval($this->post->ID));
 

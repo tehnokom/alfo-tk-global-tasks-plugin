@@ -20,3 +20,18 @@ require_once(TKGT_ROOT . 'lib/ajax_functions.php');
 global $post;
 
 $tkgt_page = new TK_GTaskPage();
+
+function tkgt_the_tasks($post_id = null)
+{
+    if(!isset($post_id)) {
+        global $post;
+
+        if(empty($post)) {
+            return;
+        }
+
+        $post_id = $post->ID;
+    }
+
+    echo apply_filters('tkgt_tasks_list', '', $post_id);
+}

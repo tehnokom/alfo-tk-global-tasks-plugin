@@ -24,8 +24,10 @@ class TK_GTask
         $this->wpdb = $wpdb;
         $this->wpdb->enable_nulls = true;
 
-        $query = $this->wpdb->prepare("SELECT id, post_id, title, description, status, type, start_date, end_date, actual_end_date
-        FROM {$this->wpdb->prefix}tkgp_tasks WHERE id = %d", $task_id);
+        $query = $this->wpdb->prepare("SELECT t.id, t.post_id, tt.description, t.status, tt.type, t.start_date, t.end_date, t.actual_end_date
+FROM {$this->wpdb->prefix}tkgt_tasks t, {$this->wpdb->prefix}tkgt_tasks_types tt
+WHERE t.task_type_id = tt.id
+AND t.id = %d", $task_id);
         $result = $this->wpdb->get_results($query, ARRAY_A);
         if (!empty($result)) {
             $src = !empty($result[0]) ? $result[0] : $result;
@@ -73,7 +75,7 @@ class TK_GTask
         if(!empty($status) && is_numeric($status)
             && intval($status) !== intval($this->status)) {
 
-            $res = $this->wpdb->update("{$this->wpdb->prefix}tkgp_tasks",
+            $res = $this->wpdb->update("{$this->wpdb->prefix}tkgt_tasks",
                 array('status' => $status),
                 array('id' => $this->task_id),
                 array('%d'),
@@ -97,7 +99,7 @@ class TK_GTask
 
         if(!empty($check_res['fields'])) {
             unset($check_res['fields']['id']);
-            $res = $this->wpdb->update("{$this->wpdb->prefix}tkgp_tasks",$check_res['fields'],
+            $res = $this->wpdb->update("{$this->wpdb->prefix}tkgt_tasks",$check_res['fields'],
                 array('id' => $this->task_id),
                 $check_res['types'],
                 array('%d'));
@@ -121,31 +123,14 @@ class TK_GTask
        if(is_array($args) && !empty($args)) {
            foreach ($args as $key => $value) {
                switch ($key) {
-                   case 'title':
-                       $types[] = '%s';
-                       $fields[$key] = $value;
-                       break;
-                   case 'description':
-                       $types[] = '%s';
-                       $fields[$key] = $value;
-                       break;
-                   case 'type':
-                       $types[] = '%s';
-                       $fields[$key] = $value;
-                       break;
+                   case 'task_type_id':
                    case 'status':
                        //0 - черновик, 1 - опубликовано, 4 - удалено
                        $types[] = '%d';
                        $fields[$key] = $value;
                        break;
                    case 'start_date':
-                       $types[] = '%s';
-                       $fields[$key] = $value;
-                       break;
                    case 'end_date':
-                       $types[] = '%s';
-                       $fields[$key] = $value;
-                       break;
                    case 'actual_end_date':
                        $types[] = '%s';
                        $fields[$key] = $value;
@@ -182,11 +167,11 @@ class TK_GTask
 
                 $fields['post_id'] = $post_id;
                 $field_type[] = '%d';
-                $res = $wpdb->insert("{$wpdb->prefix}tkgp_tasks", $fields, $field_type);
+                $res = $wpdb->insert("{$wpdb->prefix}tkgt_tasks", $fields, $field_type);
 
                 if ($res) {
-                    $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}tkgp_tasks 
-WHERE post_id = %d AND title = %s", $post_id, $fields['title']);
+                    $query = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}tkgt_tasks 
+WHERE post_id = %d AND task_type_id = %d", $post_id, $fields['task_type_id']);
 
                     $task_id = $wpdb->get_var($query);
                     $task = new TK_GTask($task_id);
@@ -195,12 +180,10 @@ WHERE post_id = %d AND title = %s", $post_id, $fields['title']);
                         $parent_task = new TK_GTask(intval($parent_id));
 
                         if ($parent_task->isValid()) {
-                            $wpdb->insert("{$wpdb->prefix}tkgp_tasks_links",
+                            $wpdb->insert("{$wpdb->prefix}tkgt_tasks_links",
                                 array('parent_id' => $parent_id,
-                                    'parent_type' => $parent_task->type,
-                                    'child_id' => $task_id,
-                                    'child_type' => $task->type),
-                                array('%d', '%s', '%d', '%d')
+                                    'child_id' => $task_id),
+                                array('%d', '%d')
                             );
                         }
 
@@ -208,7 +191,6 @@ WHERE post_id = %d AND title = %s", $post_id, $fields['title']);
                     }
                 }
             }
-
         }
 
         return null;
@@ -221,8 +203,8 @@ WHERE post_id = %d AND title = %s", $post_id, $fields['title']);
     public function have_children()
     {
         if($this->isValid()) {
-            $query = $this->wpdb->prepare("SELECT 1 FROM {$this->wpdb->prefix}tkgp_tasks_links
-WHERE parent_id = %d parent_type = %d", $this->task_id, $this->type);
+            $query = $this->wpdb->prepare("SELECT 1 FROM {$this->wpdb->prefix}tkgt_tasks_links
+WHERE parent_id = %d", $this->task_id);
             $res = $this->wpdb->get_var($query);
             return boolval($res);
         }
@@ -236,16 +218,17 @@ WHERE parent_id = %d parent_type = %d", $this->task_id, $this->type);
      */
     public function get_children()
     {
-        $sql = $this->wpdb->prepare("SELECT * FROM (SELECT t.id, t.type, l.parent_id, l.parent_type, t.internal_id 
-FROM `{$this->wpdb->prefix}tkgp_tasks` t 
-LEFT JOIN `{$this->wpdb->prefix}tkgp_tasks_links` l ON (l.child_id = t.id AND l.child_type = t.type) 
-WHERE t.post_id = %d AND t.id <> %d
+        $sql = $this->wpdb->prepare("SELECT * FROM
+(SELECT t.id, t.post_id, tl.parent_id, t.internal_id FROM {$this->wpdb->prefix}tkgt_tasks t
+LEFT JOIN {$this->wpdb->prefix}tkgt_tasks_links tl ON tl.child_id = t.id) p
+WHERE p.parent_id is NULL
+AND p.post_id = %d AND p.id <> %d
 UNION
-SELECT tt.id, tt.type, ll.parent_id, ll.parent_type, tt.internal_id 
-FROM `{$this->wpdb->prefix}tkgp_tasks` tt 
-INNER JOIN `{$this->wpdb->prefix}tkgp_tasks_links` ll ON (ll.child_id = tt.id AND ll.child_type = tt.type) 
-WHERE tt.post_id = %d AND tt.id <> %d) o
-ORDER BY o.`internal_id`;",
+SELECT * FROM
+(SELECT t.id, t.post_id, tl.parent_id, t.internal_id FROM {$this->wpdb->prefix}tkgt_tasks t
+INNER JOIN {$this->wpdb->prefix}tkgt_tasks_links tl ON tl.child_id = t.id) c
+WHERE c.post_id = %d AND c.id <> %d;
+",
             $this->post_id,
             $this->task_id,
             $this->post_id,
@@ -262,7 +245,7 @@ ORDER BY o.`internal_id`;",
 
         if (is_array($data)) {
             foreach ($data as $key => $task) {
-                if (intval($task['parent_id']) === $parent_id) {
+                if (intval($task['parent_id']) === intval($parent_id)) {
                     $out['id_' . $task['id']] = $task;
                     unset($data[$key]);
 
