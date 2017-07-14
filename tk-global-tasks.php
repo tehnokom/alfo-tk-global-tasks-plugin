@@ -16,11 +16,12 @@ define('TKGT_URL', plugin_dir_url(__FILE__));
 define('TKGT_STYLES_DIR', TKGT_ROOT . 'styles/');
 define('TKGT_STYLES_URL', TKGT_URL . 'styles/');
 
+require_once(TKGT_ROOT . 'lib/db_init.php');
 require_once(TKGT_ROOT . 'lib/core.php');
 
 function tkgt_registry_plugin()
 {
-
+    tkgt_check_version();
 }
 add_action('activate_plugin', 'tkgt_registry_plugin');
 
@@ -32,6 +33,8 @@ add_action('deactivate_plugin', 'tkgt_unregistry_plugin');
 
 function tkgt_init()
 {
+    tkgt_check_version();
+
     load_plugin_textdomain('tkgt', false, dirname(plugin_basename(__FILE__)) . '/locales/');
     load_plugin_textdomain('tkgt-style', false, dirname(plugin_basename(__FILE__)) .  '/styles/default/locales/');
 
