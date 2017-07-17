@@ -1,0 +1,14 @@
+.tkgt-menu li {
+    display: inline-block;
+    margin: 0 0 0 15px;
+    padding: 5px 10px 5px 10px;
+}
+
+.tkgt-menu li a {
+    font-size: 17px;
+    color: #121212;
+}
+
+.tkgt-menu li.current {
+    border-bottom: 2px solid #dfdfdf;
+}

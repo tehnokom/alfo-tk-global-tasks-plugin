@@ -274,7 +274,10 @@ WHERE c.post_id = %d AND c.id <> %d;
         if(!is_array($settings)) {
             $settings = array(
                 'slug' => 'tasks',
-                'enabled_for' => null
+                'enabled_for' => null,
+                'subpages' => array('actions' => '/actions',
+                    'suggestions' => '/sug',
+                    'trash' => '/trash')
             );
         } else {
             if(empty($settings['slug'])) {
@@ -282,7 +285,7 @@ WHERE c.post_id = %d AND c.id <> %d;
             }
 
             if(empty($settings['enabled_for'])) {
-                $settings['enabled_for'] = null;
+                $settings['enabled_for'] = array();
             }
         }
 

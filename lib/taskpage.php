@@ -1,4 +1,5 @@
 <?php
+
 /** This file is part of TKGlobalTasks Plugin project
  *
  * @desc TK_GTaskPage class
@@ -10,7 +11,6 @@
  * @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
  * @link https://github.com/tehnokom/alfo-tk-global-tasks-plugin
  */
-
 class TK_GTaskPage
 {
     private $template_dir;
@@ -19,10 +19,12 @@ class TK_GTaskPage
     {
         add_action('init', array($this, 'init'));
         add_action('admin_menu', array($this, 'addAdminMenu'));
-        add_action('admin_enqueue_scripts', array($this, 'regJS_CSS'));
-        add_action('wp_enqueue_scripts', array($this, 'regJS_CSS'));
+        add_action('admin_enqueue_scripts', array($this, 'regAdminJS_CSS'));
+        add_action('wp_enqueue_scripts', array($this, 'regAdminJS_CSS'));
         add_action('template_redirect', array($this, 'checkPage'));
-        add_filter('tkgt_tasks_list', array($this, 'getTasksHtml'), 10, 1);
+        add_filter('tkgt_tasks_list', array($this, 'getTasksHtml'), 10, 2);
+        add_filter('tkgt_menu', array($this, 'getMenuHtml'), 10, 2);
+        add_filter('tkgt_menu_items', array($this, 'getMenuItems'));
 
         $this->template_dir = array('template' => TEMPLATEPATH . '/tkgt_template/');
     }
@@ -49,16 +51,32 @@ class TK_GTaskPage
             '');
     }
 
-    public function regJS_CSS()
+    public function regJS_CSS($data, $type)
     {
-        $this->regScripts();
-        $this->regStyles();
+        if (!empty($data)) {
+            foreach ($data as $template) {
+                $template_path = $this->getTemplateFor('menu', $type);
+
+                if (is_file($template_path)) {
+                    $url = str_replace(ABSPATH,'/', $template_path);
+
+                    if($type === 'js') {
+                        wp_register_script("tkgi-$template-js", $url);
+                        wp_enqueue_script("tkgi-$template-js");
+                    } else {
+                        wp_register_style("tkgi-$template-css", $url);
+                        wp_enqueue_style("tkgi-$template-css");
+                    }
+                }
+            }
+        }
     }
 
     protected function regRewriteRules()
     {
         global $wp_rewrite;
-        $slug = TK_GTask::taskSettings(true)->slug;
+        $options = TK_GTask::taskSettings();
+        $slug = $options['slug'];
 
         add_rewrite_tag('%tkgt_page%', '([^&]+)');
         add_rewrite_tag('%tkgt_t%', '([^&]+)');
@@ -68,15 +86,30 @@ class TK_GTaskPage
             'index.php?post_type=$matches[1]&name=$matches[2]&tkgt_page=' . $slug,
             'top');
 
-        //WP Static pages
-        add_rewrite_rule('^([^/]+)' . $slug . '$',
-            'index.php?pagename=$matches[1]&tkgt_page=' . $slug,
-            'top');
+        foreach ($options['subpages'] as $value) {
+            add_rewrite_rule('^([^/]+)/([^/]+)(' . $slug . ')(' . $value . ')$',
+                'index.php?post_type=$matches[1]&name=$matches[2]&tkgt_page=$matches[4]',
+                'top');
+        }
+
+        if (in_array('page', (array)$options['enabled_for'])) {
+            //WP Static pages
+            add_rewrite_rule('^([^/]+)' . $slug . '$',
+                'index.php?pagename=$matches[1]&tkgt_page=' . $slug,
+                'top');
+
+            foreach ($options['subpages'] as $value) {
+                add_rewrite_rule('^([^/]+)(' . $slug . ')(' . $value . ')$',
+                    'index.php?pagename=$matches[1]&tkgt_page=$matches[3]',
+                    'top');
+            }
+        }
 
         $wp_rewrite->flush_rules();
     }
 
-    public function checkPage() {
+    public function checkPage()
+    {
         global $wp, $wp_query, $post;
 
         if (!empty($wp->query_vars['tkgt_page'])) {
@@ -91,23 +124,25 @@ class TK_GTaskPage
         }
     }
 
-    public function includeTemplate($template_path)
+    public function includeTemplate($template_path, $type = 'page')
     {
+
+
         if (in_array(get_post_type(), TK_GTask::taskSettings()['enabled_for'])) {
             global $wp;
-            $native_template = TKGT_ROOT . 'styles/default/page.php';
+            $native_template = TKGT_ROOT . "styles/default/page.php";
 
-            if(!empty($wp->query_vars['tkgt_t'])) {
+            if (!empty($wp->query_vars['tkgt_t'])) {
                 return $native_template;
             } else {
                 $dirs = scandir(dirname($template_path));
                 if (in_array('tkgt_template', $dirs)) {
-                    if(substr_count(dirname($template_path), '/wp-content/plugins')) {
-                        $this->template_dir['plugin'] = dirname($template_path) . '/tkgt_template/';
+                    if (substr_count(dirname($template_path), '/wp-content/plugins')) {
+                        $this->template_dir['plugin'] = dirname($template_path) . "/tkgt_template/";
                     }
 
-                    if (is_file(dirname($template_path) . '/tkgt_template/page.php')) {
-                        return dirname($template_path) . '/tkgt_template/page.php';
+                    if (is_file(dirname($template_path) . "/tkgt_template/page.php")) {
+                        return dirname($template_path) . "/tkgt_template/page.php";
                     }
                 } else {
                     return $native_template;
@@ -118,33 +153,41 @@ class TK_GTaskPage
         return $template_path;
     }
 
-    protected function regStyles()
+    public function regAdminJS_CSS()
     {
         if (has_action('admin_enqueue_scripts')) {
             wp_register_style('tkgt-admin-settings-css', TKGT_URL . 'admin/css/settings.css');
             wp_enqueue_style('tkgt-admin-settings-css');
-        } else {
+        } else if (has_action('admin_enqueue_scripts')) {
 
         }
     }
 
-    protected function regScripts()
+    protected function getTemplateFor($template_part_name, $type = 'page')
     {
-        if (has_action('admin_enqueue_scripts')) {
+        $subdir = '';
 
-        } else {
+        switch ($type) {
+            case 'css':
+                $subdir = 'css/';
+                break;
 
+            case 'js':
+                $subdir = 'js/';
+                break;
+
+            case 'page':
+            default:
+                $type = 'php';
+                break;
         }
-    }
 
-    protected function getTemplateFor($template_part_name)
-    {
-        $template = TKGT_STYLES_DIR . 'default/' . "$template_part_name.php";
+        $template = TKGT_STYLES_DIR . "default/$subdir" . "$template_part_name.$type";
 
-        if(is_file($this->template_dir['plugin'] . "$template_part_name.php")) {
-            $template = $this->template_dir['plugin'] . "$template_part_name.php";
-        } else if(is_file($this->template_dir['template'] . "$template_part_name.php")) {
-            $template = $this->template_dir['template'] . "$template_part_name.php";
+        if (is_file($this->template_dir['plugin'] . "$subdir" . "$template_part_name.php")) {
+            $template = $this->template_dir['plugin'] . "$subdir"  . "$template_part_name.php";
+        } else if (is_file($this->template_dir['template'] . "$subdir" . "$template_part_name.php")) {
+            $template = $this->template_dir['template'] . "$subdir" . "$template_part_name.php";
         }
 
         return $template;
@@ -154,7 +197,7 @@ class TK_GTaskPage
     {
         $template_file = $this->getTemplateFor('tasks');
 
-        if(is_file($template_file)) {
+        if (is_file($template_file)) {
             ob_start();
 
             require_once($template_file);
@@ -164,6 +207,54 @@ class TK_GTaskPage
         }
 
         return $html;
+    }
+
+    public function getMenuHtml($html, $post_id = null)
+    {
+        $tkgt_menu_items = apply_filters('tkgt_menu_items', array());
+
+        $template_file = $this->getTemplateFor('menu');
+
+        if (is_file($template_file)) {
+            ob_start();
+
+            require_once($template_file);
+
+            $html = ob_get_contents();
+            ob_end_clean();
+        }
+
+        return $html;
+    }
+
+    public function getMenuItems($items)
+    {
+        $tasks_slug = TK_GTask::taskSettings(true)->slug;
+        $task_page = get_permalink() . $tasks_slug;
+        $subpages = TK_GTask::taskSettings(true)->subpages;
+
+        $native = array(
+            array('title' => __('Tasks', 'tkgt'),
+                'href' => $task_page,
+                'slug' => $tasks_slug),
+            array('title' => __('Actions', 'tkgt'),
+                'href' => $task_page . $subpages['actions'],
+                'slug' => $subpages['actions']),
+            array('title' => __('Suggestions', 'tkgt'),
+                'href' => $task_page . $subpages['suggestions'],
+                'slug' => $subpages['suggestions']),
+            array('title' => __('Trash', 'tkgt'),
+                'href' => $task_page . $subpages['trash'],
+                'slug' => $subpages['trash']),
+        );
+
+        if (empty($items)) {
+            return $native;
+        } else {
+            $items = array_merge((array)$items, $native);
+        }
+
+        return $items;
     }
 
 }

@@ -34,6 +34,13 @@ function tkgt_add_options()
         'tkgt_general_section'
     );
 
+    add_settings_field('tkgt_subpages_slugs',
+        _x('Subpages slugs', 'Admin Settings', 'tkgt'),
+        'tkgt_get_subpages_slugs',
+        'tkgi_settings',
+        'tkgt_general_section'
+    );
+
     register_setting('tkgt_settings_group',
         'tkgt_settings',
         array('sanitize_callback' => 'tkgt_check_options')
@@ -76,13 +83,54 @@ function tkgt_get_tasks_slug()
     <?php
 }
 
+function tkgt_get_subpages_slugs()
+{
+    $cur_slugs = TK_GTask::taskSettings()['subpages'];
+
+    ?>
+    <p>
+        <?php echo _x('Specify the slugs for the respective subpages (including delimiters)',
+            'Admin Settings', 'tkgt') ?>:
+    </p>
+    <div style="display: table-row">
+        <div style="display: table-cell">
+            <label for="tkgt_actions_slug"><?php echo __('Actions subpage', 'tkgt') ?></label>
+        </div>
+        <div style="display: table-cell; padding-left: 10px;">
+            <input id="tkgt_actions_slug" name="tkgt_settings[subpages][actions]" type="text"
+                   value="<?php echo esc_url($cur_slugs['actions']) ?>">
+        </div>
+    </div>
+    <div style="display: table-row">
+        <div style="display: table-cell">
+            <label for="tkgt_suggestions_slug"><?php echo __('Suggestions subpage', 'tkgt') ?></label>
+        </div>
+        <div style="display: table-cell; padding-left: 10px;">
+            <input id="tkgt_suggestions_slug" name="tkgt_settings[subpages][suggestions]" type="text"
+                   value="<?php echo esc_url($cur_slugs['suggestions']) ?>">
+        </div>
+    </div>
+    <div style="display: table-row">
+        <div style="display: table-cell">
+            <label for="tkgt_trash_slug"><?php echo __('Trash subpage', 'tkgt') ?></label>
+        </div>
+        <div style="display: table-cell; padding-left: 10px;">
+            <input id="tkgt_trash_slug" name="tkgt_settings[subpages][trash]" type="text"
+                   value="<?php echo esc_url($cur_slugs['trash']) ?>">
+        </div>
+    </div>
+    <?php
+}
+
 function tkgt_check_options($options)
 {
     $valid = array();
-
+    file_put_contents(__FILE__ . '.log', serialize($options) . "\r\n", FILE_APPEND);
     foreach ($options as $opt => $item) {
         if ($opt === 'enabled_for' && is_array($item)) {
             $valid[$opt] = array_keys($item);
+        } else if ($opt === 'subpages' && is_array($item)) {
+            $valid[$opt] = $item;
         } else {
             $valid[$opt] = esc_url_raw($item);
         }
