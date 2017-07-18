@@ -287,6 +287,12 @@ WHERE c.post_id = %d AND c.id <> %d;
             if(empty($settings['enabled_for'])) {
                 $settings['enabled_for'] = array();
             }
+
+            if(empty($settings['subpages'])) {
+                $settings['subpages'] = array('actions' => '/actions',
+                    'suggestions' => '/sug',
+                    'trash' => '/trash');
+            }
         }
 
         return ($out_object ? (object)$settings : $settings);
