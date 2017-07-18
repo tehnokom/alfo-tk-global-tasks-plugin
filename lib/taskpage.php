@@ -25,6 +25,7 @@ class TK_GTaskPage
         add_filter('tkgt_tasks_list', array($this, 'getTasksHtml'), 10, 2);
         add_filter('tkgt_menu', array($this, 'getMenuHtml'), 10, 2);
         add_filter('tkgt_menu_items', array($this, 'getMenuItems'));
+        //add_action('wp', array($this, 'test'));
 
         $this->template_dir = array('template' => TEMPLATEPATH . '/tkgt_template/');
     }
@@ -75,7 +76,7 @@ class TK_GTaskPage
     protected function regRewriteRules()
     {
         global $wp_rewrite;
-        $options = TK_GTask::taskSettings();
+        $options = self::taskSettings();
         $slug = $options['slug'];
 
         add_rewrite_tag('%tkgt_page%', '([^&]+)');
@@ -113,7 +114,7 @@ class TK_GTaskPage
         global $wp, $wp_query, $post;
 
         if (!empty($wp->query_vars['tkgt_page'])) {
-            if (!empty($post) && in_array($post->post_type, TK_GTask::taskSettings(true)->enabled_for)) {
+            if (!empty($post) && in_array($post->post_type, self::taskSettings(true)->enabled_for)) {
                 add_filter('template_include', array($this, 'includeTemplate'));
             } else {
                 $wp_query->set_404();
@@ -126,9 +127,7 @@ class TK_GTaskPage
 
     public function includeTemplate($template_path, $type = 'page')
     {
-
-
-        if (in_array(get_post_type(), TK_GTask::taskSettings()['enabled_for'])) {
+        if (in_array(get_post_type(), self::taskSettings()['enabled_for'])) {
             global $wp;
             $native_template = TKGT_ROOT . "styles/default/page.php";
 
@@ -229,9 +228,9 @@ class TK_GTaskPage
 
     public function getMenuItems($items)
     {
-        $tasks_slug = TK_GTask::taskSettings(true)->slug;
+        $tasks_slug = self::taskSettings(true)->slug;
         $task_page = get_permalink() . $tasks_slug;
-        $subpages = TK_GTask::taskSettings(true)->subpages;
+        $subpages = self::taskSettings(true)->subpages;
 
         $native = array(
             array('title' => __('Tasks', 'tkgt'),
@@ -257,4 +256,63 @@ class TK_GTaskPage
         return $items;
     }
 
+    static function taskSettings($out_object = false)
+    {
+        $settings = get_option('tkgt_settings');
+
+        if(!is_array($settings)) {
+            $settings = array(
+                'slug' => 'tasks',
+                'enabled_for' => null,
+                'subpages' => array('actions' => '/actions',
+                    'suggestions' => '/sug',
+                    'trash' => '/trash'),
+                'fullpage_url' => 'tasks/%post_id%/%task_id%'
+            );
+        } else {
+            if(empty($settings['slug'])) {
+                $settings['slug'] = 'tasks';
+            }
+
+            if(empty($settings['enabled_for'])) {
+                $settings['enabled_for'] = array();
+            } else {
+                foreach ($settings['enabled_for'] as $post_type) {
+                    if(empty($settings['uri_slugs'][$post_type])) {
+                        $settings['uri_slugs'][$post_type] = $post_type;
+                    }
+                }
+            }
+
+            if(empty($settings['subpages'])) {
+                $settings['subpages'] = array('actions' => '/actions',
+                    'suggestions' => '/sug',
+                    'trash' => '/trash');
+            }
+
+            if(empty($settings['fullpage_url'])) {
+                $settings['fullpage_url'] = 'tasks/%post_id%/%task_id%';
+            }
+        }
+
+        return ($out_object ? (object)$settings : $settings);
+    }
+
+    public function getTaskPagePermalink($post_id = null)
+    {
+        $post_type = get_post_type($post_id);
+
+        if($post_type && in_array($post_type, self::taskSettings(true)->enabled_for)) {
+            $permalink = get_post_permalink($post_id);
+
+            if (!is_object($permalink)) {
+                $slug = self::taskSettings(true)->slug;
+
+                return "$permalink$slug";
+            }
+
+        }
+
+        return '';
+    }
 }

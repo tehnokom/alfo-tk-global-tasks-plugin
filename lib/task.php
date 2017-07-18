@@ -266,37 +266,6 @@ WHERE c.post_id = %d AND c.id <> %d;
 
         return $out;
     }
-
-    static function taskSettings($out_object = false)
-    {
-        $settings = get_option('tkgt_settings');
-
-        if(!is_array($settings)) {
-            $settings = array(
-                'slug' => 'tasks',
-                'enabled_for' => null,
-                'subpages' => array('actions' => '/actions',
-                    'suggestions' => '/sug',
-                    'trash' => '/trash')
-            );
-        } else {
-            if(empty($settings['slug'])) {
-                $settings['slug'] = 'tasks';
-            }
-
-            if(empty($settings['enabled_for'])) {
-                $settings['enabled_for'] = array();
-            }
-
-            if(empty($settings['subpages'])) {
-                $settings['subpages'] = array('actions' => '/actions',
-                    'suggestions' => '/sug',
-                    'trash' => '/trash');
-            }
-        }
-
-        return ($out_object ? (object)$settings : $settings);
-    }
 }
 
 ;
