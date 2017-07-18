@@ -23,6 +23,7 @@
 
 /*.s_tasks__item.open > .s_tasks__item__title { color: #000; background-color: transparent; border-color: #D6D8D7; }*/
 .s_tasks__item.open > .s_tasks__item__title:hover { border-color: #aaa; box-shadow: none; }
+.s_tasks__item.open .s_tasks__item__title.stage:hover { background-color: rgba(0,123,172,0.1); box-shadow: none; transition: 0.3s all; }
 .s_tasks__item.open > .s_tasks__item__title:active { background-color: rgba(0,0,0,0.1); }
 
 .s_tasks__item.open > .s_tasks__item__title::before { opacity: 0; transform: scale(0.5); }
@@ -38,7 +39,7 @@
 .s_tasks__tree__item:first-child { margin-top: 0; }
 .s_tasks__tree__item__title { display: block; position: relative; height: 24px; margin: 7px 0 0 2px; padding-left: 60px; font-size: 13px; color: #007BAC; text-decoration: none; white-space: nowrap; line-height: 24px; text-overflow: ellipsis; overflow: hidden; transition: 0.3s all; }
 .s_tasks__tree__item__title:first-child { margin-top: 0; }
-.s_tasks__tree__item__title:hover { cursor: pointer; opacity: 0.75; }
+.s_tasks__tree__item__title:hover { background-color: rgba(0,123,172,0.1); cursor: pointer; /*opacity: 0.75;*/ transition: 0.3s all; }
 .s_tasks__tree__item__title:active { opacity: 0.5; }
 
 .s_tasks__tree__item__title::before,
