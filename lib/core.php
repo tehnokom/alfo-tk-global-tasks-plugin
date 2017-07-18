@@ -63,3 +63,10 @@ function tkgt_before_header($data = null)
         $tkgt_core->regJS_CSS($data, 'css');
     }
 }
+
+function tkgt_tasks_page_permalink($post_id = null)
+{
+    global $tkgt_core;
+
+    return $tkgt_core->getTaskPagePermalink($post_id);
+}

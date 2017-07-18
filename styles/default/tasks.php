@@ -3,7 +3,6 @@
 
     $tasks = new TK_GTasks(intval($_POST['post_id']));
     if ($tasks->isValid()) {
-        //$tasks->setStatuses(1);
         $tasks->createPage();
 
         if ($tasks->have_tasks()) {
