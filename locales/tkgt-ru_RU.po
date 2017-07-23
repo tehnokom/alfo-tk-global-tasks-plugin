@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TehnoKom Global Tasks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-06 07:45+0000\n"
-"PO-Revision-Date: 2017-07-06 07:49+0000\n"
-"Last-Translator: Равиль <ra9oaj@mail.ru>\n"
+"POT-Creation-Date: 2017-07-23 10:08+0000\n"
+"PO-Revision-Date: 2017-07-23 10:09+0000\n"
+"Last-Translator: Равиль <test64@test.ru>\n"
 "Language-Team: Russian\n"
 "Language: ru-RU\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
@@ -14,25 +14,89 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#: admin/settings.php:16 lib/taskpage.php:40
+#: styles/default/single-page.php:37
+msgid "Description"
+msgstr "Описание"
+
+#: styles/default/single-page.php:46
+msgid "Creation date"
+msgstr "Дата создания"
+
+#: styles/default/single-page.php:52
+msgid "Type of task"
+msgstr "Тип задачи"
+
+#: styles/default/single-page.php:56
+msgid "Start date"
+msgstr "Дата начала"
+
+#: styles/default/single-page.php:63
+msgid "Periodicity"
+msgstr "Периодичность"
+
+#: styles/default/single-page.php:67
+msgid "End date"
+msgstr "Дата окончания"
+
+#: styles/default/single-page.php:74
+msgid "Working messages"
+msgstr "Рабочие сообщения"
+
+#: admin/settings.php:16 lib/taskpage.php:50
 msgctxt "Admin menu"
 msgid "Tasks Settings"
 msgstr "Настройки Задач"
 
-#: lib/taskpage.php:32
+#: lib/taskpage.php:42
 msgctxt "Admin menu"
 msgid "TK Global Tasks"
 msgstr "ТК Глобальные задачи"
 
-#: lib/taskpage.php:33
+#: lib/taskpage.php:43
 msgctxt "Admin menu"
 msgid "Global Tasks"
 msgstr "Глобальный задачи"
 
-#: lib/taskpage.php:41
+#: lib/taskpage.php:51
 msgctxt "Admin menu"
 msgid "TK Tasks"
 msgstr "ТК Задачи"
+
+#: lib/taskpage.php:415 lib/taskpage.php:447
+msgid "Tasks"
+msgstr "Задачи"
+
+#: lib/taskpage.php:419
+msgid "Actions"
+msgstr "Действия"
+
+#: lib/taskpage.php:423
+msgid "Suggestions"
+msgstr "Предложения"
+
+#: lib/taskpage.php:427
+msgid "Trash"
+msgstr "Корзина"
+
+#: lib/taskpage.php:455
+msgid "View task"
+msgstr "Просмотр задач"
+
+#: lib/core.php:124 styles/default/single-page.php:24
+msgid "Direction"
+msgstr "Направление"
+
+#: lib/core.php:128 styles/default/single-page.php:30
+msgid "Stage"
+msgstr "Этап"
+
+#: lib/core.php:132
+msgid "Task"
+msgstr "Задача"
+
+#: lib/core.php:247
+msgid "No comments"
+msgstr "Нет комментариев"
 
 #: lib/settings.php:24
 msgctxt "Admin Settings"
@@ -41,13 +105,127 @@ msgstr "Слаг страницы задач"
 
 #: lib/settings.php:31
 msgctxt "Admin Settings"
+msgid "URL of Detailed page"
+msgstr "URL Детальной страницы"
+
+#: lib/settings.php:38
+msgctxt "Admin Settings"
 msgid "Types of Posts"
 msgstr "Типы постов"
 
-#: lib/settings.php:48
+#: lib/settings.php:45 lib/settings.php:123 lib/settings.php:163
+msgctxt "Admin Settings"
+msgid "Slugs for types of posts"
+msgstr "Слаги для типов постов"
+
+#: lib/settings.php:52
+msgctxt "Admin Settings"
+msgid "Subpages slugs"
+msgstr "Слаги подстраниц"
+
+#: lib/settings.php:69
 msgctxt "Admin Settings"
 msgid "Select the types of posts for which the task plan will be available"
 msgstr "Выберете типы постов, для которых будут доступны планы задач"
+
+#: lib/settings.php:109
+msgctxt "Admin Settings"
+msgid "Here you can change the URL for a detailed task page"
+msgstr "Здесь Вы можете установить URL для детальной тсраницы"
+
+#: lib/settings.php:113
+msgctxt "Admin Settings"
+msgid "Task list URL"
+msgstr "URL списка задач"
+
+#: lib/settings.php:122 lib/settings.php:162
+msgctxt "Admin Settings"
+msgid "Post type identifier (string), values are taken from the setting"
+msgstr "Тип поста (строка), значения берутся из настройки"
+
+#: lib/settings.php:125 lib/settings.php:165
+msgctxt "Admin Settings"
+msgid "Global ID of the post (number)"
+msgstr "Глобальный ID поста (число)"
+
+#: lib/settings.php:127 lib/settings.php:167
+msgctxt "Admin Settings"
+msgid ""
+"The internal number of the post (number) must be used together with <b>"
+"%post_type%</b> or <b>%task_post_slug%</b>, in most cases equal to"
+msgstr ""
+"Внутренний номер поста (число), должен использоваться вместе с <b>% "
+"post_type% </b> или <b>% task_post_slug% </b>, в большинстве случаев равный"
+
+#: lib/settings.php:129 lib/settings.php:169
+msgctxt "Admin Settings"
+msgid "Type of post (string)"
+msgstr "Тип поста"
+
+#: lib/settings.php:133
+msgctxt "Admin Settings"
+msgid "Subpages URL"
+msgstr "URL подстраницы"
+
+#: lib/settings.php:139
+msgctxt "Admin Settings"
+msgid "Warning!"
+msgstr "Внимание!"
+
+#: lib/settings.php:141
+msgctxt "Admin Settings"
+msgid ""
+"Errors in configuration. To maintain the functionality, the default value "
+"will be used"
+msgstr ""
+"Ошибки в конфигурации. Для поддержания функциональности будет использоваться "
+"значение по умолчанию"
+
+#: lib/settings.php:144
+msgctxt "Admin Settings"
+msgid "Errors"
+msgstr "Ошибки"
+
+#: lib/settings.php:158
+msgctxt "Admin Settings"
+msgid "Global Task ID (number)"
+msgstr "Глобальный ID задачи"
+
+#: lib/settings.php:159
+msgctxt "Admin Settings"
+msgid "Internal Task ID within the parent post (number)"
+msgstr "Внутренний ID задачи в рамках родительского поста (число)"
+
+#: lib/settings.php:197
+msgctxt "Admin Settings"
+msgid ""
+"This setting will be after you select at least one type of posts and save "
+"the settings."
+msgstr ""
+"Этот параметр будет выбран после того, как вы выберете хотя бы один тип "
+"сообщений и сохраните настройки."
+
+#: lib/settings.php:209
+msgctxt "Admin Settings"
+msgid "Specify the slugs for the respective subpages (including delimiters)"
+msgstr "Укажите слаги для соответствующих подстраниц (включая разделители)"
+
+#: lib/settings.php:214
+msgid "Actions subpage"
+msgstr "Подстраница действий"
+
+#: lib/settings.php:223
+msgid "Suggestions subpage"
+msgstr "Подстраница предложений"
+
+#: lib/settings.php:232
+msgid "Trash subpage"
+msgstr "Подстраница корзины"
+
+#: lib/settings.php:261 lib/settings.php:267
+msgctxt "Admin Settings"
+msgid "In the configuration, one of the identifiers must be present: "
+msgstr "В конфигурации должен присутствовать один из идентификаторов:"
 
 #. Name of the plugin
 msgid "TehnoKom Global Tasks"
