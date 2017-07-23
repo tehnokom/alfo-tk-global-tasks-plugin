@@ -1,0 +1,77 @@
+.tkgt-block {
+    border: 1px solid #dfdfdf;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.tkgt-card {
+    border: 1px solid #dfdfdf;
+    border-radius: 5px;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.tkgt-header {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.tkgt-header > div {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 16px;
+    padding: 0 5px 0 5px;
+}
+
+.tkgt-body {
+    display: table;
+    width: 100%;
+    padding: 10px;
+}
+
+.tkgt-body.last {
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.tkgt-body > div {
+    display: table-row;
+}
+
+.tkgt-body > div > div {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 5px;
+}
+
+.title {
+    width: 15%;
+}
+
+.value {
+    display: inline-block;
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #dfdfdf;
+    border-radius: 5px;
+    width: 90%;
+}
+
+.value.disabled {
+    background: #d7d7d7;
+}
+
+.desc {
+    padding: 10px;
+}
+
+.desc > div:nth-last-child(1) {
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.messages {
+    padding: 10px;
+}

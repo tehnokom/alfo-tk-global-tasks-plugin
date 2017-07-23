@@ -58,9 +58,7 @@ function tkgt_db_install($cur_version)
 				  UNIQUE `link` (`parent_id`, `child_id`)
 				){$charset_collate};";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        dbDelta($sql);
+        $wpdb->query($sql);
     }
 
     $table_name = $wpdb->prefix . 'tkgt_tasks';
@@ -76,27 +74,16 @@ function tkgt_db_install($cur_version)
                   `end_date` DATETIME NULL DEFAULT NULL , 
                   `actual_end_date` DATETIME NULL DEFAULT NULL ,
                   `internal_id` INTEGER UNSIGNED NOT NULL DEFAULT '1',
+                  `serial_number` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
                   PRIMARY KEY (`id`),  
                   UNIQUE `task_type` (`post_id`, `task_type_id`),
-                  INDEX `status` (`status`)
+                  INDEX `status` (`status`),
+                  INDEX `serial_number` (`serial_number`),
+                  INDEX `internal_id` (`internal_id`),
+                  UNIQUE `unique_internal` (`post_id`, `internal_id`)
                   ){$charset_collate};";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        dbDelta($sql);
-    }
-
-    $res = $wpdb->get_results("SHOW TRIGGERS WHERE `Trigger` LIKE 'tkgt_create%'", ARRAY_A);
-    if (is_array($res) && !count($res)) {
-        $sql = "CREATE TRIGGER `tkgt_create_new_task` AFTER INSERT ON `{$wpdb->prefix}tkgt_tasks_links` FOR EACH ROW 
-	                UPDATE {$wpdb->prefix}tkgt_tasks 
-                    SET internal_id = (SELECT COUNT(1) FROM {$wpdb->prefix}tkgt_tasks_links 
-                                        WHERE parent_id = NEW.parent_id) + 1
-	                WHERE id = NEW.child_id;";
-
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-        dbDelta($sql);
+        $wpdb->query($sql);
     }
 
     $table_name = $wpdb->prefix . 'tkgt_tasks_types';
@@ -114,9 +101,27 @@ function tkgt_db_install($cur_version)
   INDEX `post_type` (`post_type`, `type`)
 ){$charset_collate}";
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        $wpdb->query($sql);
+    }
 
-        dbDelta($sql);
+    $res = $wpdb->get_results("SHOW TRIGGERS WHERE `Trigger` LIKE 'tkgt_internal_id'", ARRAY_A);
+    if (is_array($res) && !count($res)) {
+        $sql = "CREATE TRIGGER `tkgt_internal_id` BEFORE INSERT ON `{$wpdb->prefix}tkgt_tasks` FOR EACH ROW 
+SET NEW.internal_id = (SELECT COUNT(1) FROM {$wpdb->prefix}tkgt_tasks 
+WHERE post_id = NEW.post_id) + 1";
+
+        $wpdb->query($sql);
+    }
+
+    $res = $wpdb->get_results("SHOW TRIGGERS WHERE `Trigger` LIKE 'tkgt_create%'", ARRAY_A);
+    if (is_array($res) && !count($res)) {
+        $sql = "CREATE TRIGGER `tkgt_create_new_task` BEFORE INSERT ON `{$wpdb->prefix}tkgt_tasks_links` FOR EACH ROW 
+UPDATE {$wpdb->prefix}tkgt_tasks 
+SET serial_number = (SELECT COUNT(1) FROM {$wpdb->prefix}tkgt_tasks_links 
+                     WHERE parent_id = NEW.parent_id) + 1
+WHERE id = NEW.child_id;";
+
+        $wpdb->query($sql);
     }
 
     update_option('tkgt_db_version', $cur_version);

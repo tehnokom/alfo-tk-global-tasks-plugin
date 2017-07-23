@@ -101,11 +101,36 @@ function tkgt_get_tasks_slug()
 function tkgt_get_fullpage_url()
 {
     $errors = TK_GTaskPage::taskSettings(true)->fullpage_url_errors;
+    $cur_home_url = TK_GTaskPage::taskSettings(true)->fullpage_home_url;
     $cur_url = empty($errors) ? TK_GTaskPage::taskSettings(true)->fullpage_url
         : TK_GTaskPage::taskSettings(true)->fullpage_url_bad;
     ?>
     <p>
         <?php echo _x('Here you can change the URL for a detailed task page', 'Admin Settings', 'tkgt') ?>:
+    </p>
+    <br>
+    <p>
+        <b><?php echo _x('Task list URL', 'Admin Settings', 'tkgt'); ?>:</b>
+    </p>
+    <label for="tkgt_general_fullpage_url">
+        <code><?php echo home_url() ?>/</code>
+    </label>
+    <input id="tkgt_general_fullpage_url" name="tkgt_settings[fullpage_home_url]" type="text" style="width: 50%;"
+           value="<?php echo $cur_home_url ?>">
+    <p>
+        <code>%task_post_slug%</code>
+        - <?php echo _x('Post type identifier (string), values are taken from the setting',
+                'Admin Settings', 'tkgt') . ' <b>"' . _x('Slugs for types of posts', 'Admin Settings', 'tkgt') . '"</b>' ?>
+        ,
+        <code>%post_id%</code> - <?php echo _x('Global ID of the post (number)', 'Admin Settings', 'tkgt') ?>,
+        <code>%post_iid%</code>
+        - <?php echo _x('The internal number of the post (number) must be used together with <b>%post_type%</b> or <b>%task_post_slug%</b>, in most cases equal to',
+                'Admin Settings', 'tkgt') . ' <b>%post_id%</b>' ?>,
+        <code>%post_type%</code> - <?php echo _x('Type of post (string)', 'Admin Settings', 'tkgt') ?>
+    </p>
+    <br>
+    <p>
+        <b><?php echo _x('Subpages URL', 'Admin Settings', 'tkgt'); ?>:</b>
     </p>
     <?php
     if (!empty($errors)) {
@@ -127,7 +152,7 @@ function tkgt_get_fullpage_url()
     }
     ?>
     <code><?php echo home_url() ?>/</code>
-    <input id="tkgt_fullpage_url" name="tkgt_settings[fullpage_url]" type="text"
+    <input id="tkgt_fullpage_url" name="tkgt_settings[fullpage_url]" type="text" style="width: 50%;"
            value="<?php echo $cur_url ?>">
     <p>
         <code>%task_id%</code> - <?php echo _x('Global Task ID (number)', 'Admin Settings', 'tkgt') ?>,
@@ -223,7 +248,7 @@ function tkgt_check_options($options)
             $valid[$opt] = array_keys($item);
         } else if (($opt === 'subpages' || $opt === 'uri_slugs') && is_array($item)) {
             foreach ($item as $key => $val) {
-                $valid[$opt][$key] = esc_url($val, array(''));
+                $valid[$opt][$key] = $val;
             }
         } else if ($opt === 'fullpage_url') {
             $errors = array();
@@ -254,10 +279,10 @@ function tkgt_check_options($options)
                 $valid['fullpage_url_bad'] = $item;
                 $valid['fullpage_url'] = 'tasks/%post_id%/%task_id%';
             } else {
-                $valid['fullpage_url'] = esc_url($item, array(''));
+                $valid[$opt] = $item;
             }
         } else {
-            $valid[$opt] = esc_url($item, array(''));
+            $valid[$opt] = $item;
         }
     }
 

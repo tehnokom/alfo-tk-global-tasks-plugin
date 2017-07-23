@@ -1,5 +1,6 @@
 <div class="s_tasks">
     <?php
+    global $tkgt_core;
 
     $tasks = new TK_GTasks(intval($_POST['post_id']));
     if ($tasks->isValid()) {
@@ -79,7 +80,8 @@
                         <?php
                     } else {
                         ?>
-                        <a href="#" class="s_tasks__tree__item__title" data-type="project"
+                        <a href="<?php echo tkgt_tasks_fullpage_link($task->post_id, $task->task_id) ?>"
+                           class="s_tasks__tree__item__title" data-type="project"
                            data-type="circle"><span>
                                 <?php echo apply_filters('the_content',$task->description) ?>
                             </span></a>
@@ -103,8 +105,10 @@
                     break;
 
                 default:
+                    echo $task->task_id;
                     ?>
-                    <a href="#" class="s_tasks__tree__item__title" data-type="project"
+                    <a href="<?php echo tkgt_tasks_fullpage_link($task->post_id, $task->task_id) ?>"
+                       class="s_tasks__tree__item__title" data-type="project"
                        data-type="circle"><span><?php echo apply_filters('the_content',$task->description) ?></span></a>
                     <?php
                     if ($task->have_children() && $level <= $max_level) {

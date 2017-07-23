@@ -71,18 +71,18 @@ class TK_GTasks
                 $this->setStatuses();
             }
 
-            $sql = $this->wpdb->prepare("SELECT * FROM (SELECT t.id, l.parent_id, t.internal_id 
+            $sql = $this->wpdb->prepare("SELECT * FROM (SELECT t.id, l.parent_id, t.serial_number 
 FROM `{$this->wpdb->prefix}tkgt_tasks` t 
 LEFT JOIN `{$this->wpdb->prefix}tkgt_tasks_links` l ON (l.child_id = t.id) 
 WHERE t.post_id = %d
 AND t.status {$this->status_list}
 UNION
-SELECT tt.id, ll.parent_id, tt.internal_id 
+SELECT tt.id, ll.parent_id, tt.serial_number 
 FROM `{$this->wpdb->prefix}tkgt_tasks` tt 
 INNER JOIN `{$this->wpdb->prefix}tkgt_tasks_links` ll ON (ll.child_id = tt.id) 
 WHERE tt.post_id = %d
 AND tt.status {$this->status_list}) o
-ORDER BY o.`parent_id` ASC, o.`internal_id` ASC;",
+ORDER BY o.`parent_id` ASC, o.`serial_number` ASC;",
                 intval($this->post->ID),
                 intval($this->post->ID));
 
