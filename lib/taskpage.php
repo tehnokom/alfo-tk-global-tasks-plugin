@@ -291,7 +291,7 @@ class TK_GTaskPage
 
             $native_template = TKGT_ROOT . "styles/default/{$type}.php";
 
-            if (!empty($wp_query->query_vars['tkgt_t'])) {
+            if (!empty($wp_query->query_vars['tkgt_t']) || (self::isFullPage() && !self::isSingleFullPage())) {
                 return $native_template;
             }
 

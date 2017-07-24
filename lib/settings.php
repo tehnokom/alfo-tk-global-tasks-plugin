@@ -177,8 +177,8 @@ function tkgt_get_fullpage_slug()
     $posts_types = TK_GTaskPage::taskSettings(true)->enabled_for;
     ?>
     <p>
-        <?php echo _x('Here you can determine the slug for a particular type of post. ' .
-            'This slug will be used to identify the tasks of a certain type of post.', 'Admin Settings', 'tkgt') ?>
+        <?php echo _x('Here you can determine the slug for a particular type of post. This slug will be used to identify the tasks of a certain type of post.',
+            'Admin Settings', 'tkgt') ?>
     </p>
     <?php
     if (!empty($posts_types)) {

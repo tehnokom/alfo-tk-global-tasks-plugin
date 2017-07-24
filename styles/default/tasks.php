@@ -105,7 +105,6 @@
                     break;
 
                 default:
-                    echo $task->task_id;
                     ?>
                     <a href="<?php echo tkgt_tasks_fullpage_link($task->post_id, $task->task_id) ?>"
                        class="s_tasks__tree__item__title" data-type="project"
