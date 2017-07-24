@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-23 10:08+0000\n"
+"POT-Creation-Date: 2017-07-23 12:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -54,15 +54,15 @@ msgstr ""
 msgid "View task"
 msgstr ""
 
-#: lib/core.php:124 styles/default/single-page.php:24
+#: lib/core.php:124 styles/default/single-page.php:28
 msgid "Direction"
 msgstr ""
 
-#: lib/core.php:128 styles/default/single-page.php:30
+#: lib/core.php:128 styles/default/single-page.php:34
 msgid "Stage"
 msgstr ""
 
-#: lib/core.php:132
+#: lib/core.php:132 styles/default/single-page.php:19
 msgid "Task"
 msgstr ""
 
@@ -164,6 +164,13 @@ msgctxt "Admin Settings"
 msgid "Internal Task ID within the parent post (number)"
 msgstr ""
 
+#: lib/settings.php:180
+msgctxt "Admin Settings"
+msgid ""
+"Here you can determine the slug for a particular type of post. This slug "
+"will be used to identify the tasks of a certain type of post."
+msgstr ""
+
 #: lib/settings.php:197
 msgctxt "Admin Settings"
 msgid ""
@@ -193,31 +200,39 @@ msgctxt "Admin Settings"
 msgid "In the configuration, one of the identifiers must be present: "
 msgstr ""
 
-#: styles/default/single-page.php:37
+#: styles/default/menu.php:14
+msgid "Advanced view"
+msgstr ""
+
+#: styles/default/menu.php:19
+msgid "Open in new tab"
+msgstr ""
+
+#: styles/default/single-page.php:41
 msgid "Description"
 msgstr ""
 
-#: styles/default/single-page.php:46
+#: styles/default/single-page.php:50
 msgid "Creation date"
 msgstr ""
 
-#: styles/default/single-page.php:52
+#: styles/default/single-page.php:56
 msgid "Type of task"
 msgstr ""
 
-#: styles/default/single-page.php:56
+#: styles/default/single-page.php:60
 msgid "Start date"
 msgstr ""
 
-#: styles/default/single-page.php:63
+#: styles/default/single-page.php:67
 msgid "Periodicity"
 msgstr ""
 
-#: styles/default/single-page.php:67
+#: styles/default/single-page.php:71
 msgid "End date"
 msgstr ""
 
-#: styles/default/single-page.php:74
+#: styles/default/single-page.php:78
 msgid "Working messages"
 msgstr ""
 

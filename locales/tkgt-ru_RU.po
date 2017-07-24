@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TehnoKom Global Tasks\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-23 10:08+0000\n"
-"PO-Revision-Date: 2017-07-23 10:09+0000\n"
+"POT-Creation-Date: 2017-07-23 12:10+0000\n"
+"PO-Revision-Date: 2017-07-23 12:11+0000\n"
 "Last-Translator: Равиль <test64@test.ru>\n"
 "Language-Team: Russian\n"
 "Language: ru-RU\n"
@@ -14,33 +14,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco - https://localise.biz/"
 
-#: styles/default/single-page.php:37
-msgid "Description"
-msgstr "Описание"
-
-#: styles/default/single-page.php:46
-msgid "Creation date"
-msgstr "Дата создания"
-
-#: styles/default/single-page.php:52
-msgid "Type of task"
-msgstr "Тип задачи"
-
-#: styles/default/single-page.php:56
-msgid "Start date"
-msgstr "Дата начала"
-
-#: styles/default/single-page.php:63
-msgid "Periodicity"
-msgstr "Периодичность"
-
-#: styles/default/single-page.php:67
-msgid "End date"
-msgstr "Дата окончания"
-
-#: styles/default/single-page.php:74
-msgid "Working messages"
-msgstr "Рабочие сообщения"
+#: lib/settings.php:180
+msgctxt "Admin Settings"
+msgid ""
+"Here you can determine the slug for a particular type of post. This slug "
+"will be used to identify the tasks of a certain type of post."
+msgstr ""
+"Здесь вы можете определить слаг для определенного типа сообщения. Этот слаг "
+"будет использоваться для определения задач определенного типа сообщений."
 
 #: admin/settings.php:16 lib/taskpage.php:50
 msgctxt "Admin menu"
@@ -82,15 +63,15 @@ msgstr "Корзина"
 msgid "View task"
 msgstr "Просмотр задач"
 
-#: lib/core.php:124 styles/default/single-page.php:24
+#: lib/core.php:124 styles/default/single-page.php:28
 msgid "Direction"
 msgstr "Направление"
 
-#: lib/core.php:128 styles/default/single-page.php:30
+#: lib/core.php:128 styles/default/single-page.php:34
 msgid "Stage"
 msgstr "Этап"
 
-#: lib/core.php:132
+#: lib/core.php:132 styles/default/single-page.php:19
 msgid "Task"
 msgstr "Задача"
 
@@ -226,6 +207,42 @@ msgstr "Подстраница корзины"
 msgctxt "Admin Settings"
 msgid "In the configuration, one of the identifiers must be present: "
 msgstr "В конфигурации должен присутствовать один из идентификаторов:"
+
+#: styles/default/menu.php:14
+msgid "Advanced view"
+msgstr "Расширенный вид"
+
+#: styles/default/menu.php:19
+msgid "Open in new tab"
+msgstr "Открыть в новой вкладке"
+
+#: styles/default/single-page.php:41
+msgid "Description"
+msgstr "Описание"
+
+#: styles/default/single-page.php:50
+msgid "Creation date"
+msgstr "Дата создания"
+
+#: styles/default/single-page.php:56
+msgid "Type of task"
+msgstr "Тип задачи"
+
+#: styles/default/single-page.php:60
+msgid "Start date"
+msgstr "Дата начала"
+
+#: styles/default/single-page.php:67
+msgid "Periodicity"
+msgstr "Периодичность"
+
+#: styles/default/single-page.php:71
+msgid "End date"
+msgstr "Дата окончания"
+
+#: styles/default/single-page.php:78
+msgid "Working messages"
+msgstr "Рабочие сообщения"
 
 #. Name of the plugin
 msgid "TehnoKom Global Tasks"
