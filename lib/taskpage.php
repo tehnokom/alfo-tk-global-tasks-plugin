@@ -139,6 +139,7 @@ class TK_GTaskPage
         }
 
         $query = '';
+        $next_index = 0;
 
         foreach ($params[0] as $index => $param) {
             if (!empty($query)) {
@@ -168,6 +169,7 @@ class TK_GTaskPage
             }
 
             $query .= '=$matches[' . ($index + 1) . ']';
+            $next_index = $index + 2;
         }
 
         $query = 'index.php?' . $query;
@@ -178,9 +180,21 @@ class TK_GTaskPage
             foreach ($values as $value) {
                 $new_url = str_replace($flag, "($value)", $url_template);
                 add_rewrite_rule('^' . $new_url . '$', $query, 'top');
+
+                foreach ($options['subpages'] as $sub) {
+                    $new_url_sub = $new_url . '(' . $sub . ')';
+                    $new_query = $query . "&tkgt_page=\$matches[$next_index]";
+                    add_rewrite_rule('^' . $new_url_sub . '$', $new_query, 'top');
+                }
             }
         } else {
             add_rewrite_rule('^' . $url_template . '$', $query, 'top');
+
+            foreach ($options['subpages'] as $sub) {
+                $new_url = $url_template . '(' . $sub . ')';
+                $new_query = $query . "&tkgt_page=\$matches[$next_index]";
+                add_rewrite_rule('^' . $new_url . '$', $new_query, 'top');
+            }
         }
     }
 
@@ -188,8 +202,9 @@ class TK_GTaskPage
     {
         global $wp, $wp_query, $post;
 
-        if (!empty($wp->query_vars['tkgt_page'])) {
-            if (!empty($post) && in_array($post->post_type, self::taskSettings(true)->enabled_for)) {
+        if (!empty($wp->query_vars['tkgt_page']) && !self::isFullPage()) {
+            if (!empty($post) && in_array($post->post_type, self::taskSettings(true)->enabled_for)
+                || self::isFullPage()) {
                 add_filter('template_include', array($this, 'includeTemplate'));
             } else {
                 $wp_query->set_404();
@@ -256,6 +271,10 @@ class TK_GTaskPage
             $new_query = array('post_type' => $post_type,
                 'name' => $post_o->post_name);
 
+            if (!empty($wp_query->query_vars['tkgt_page'])) {
+                $new_query['tkgt_page'] = $wp_query->query_vars['tkgt_page'];
+            }
+
             if ($post_o) {
                 $new_query['tkgt_pid'] = $post_o->ID;
             }
@@ -285,16 +304,25 @@ class TK_GTaskPage
 
     public function includeTemplate($template_path)
     {
-        if (in_array(get_post_type(), self::taskSettings()['enabled_for'])) {
+        $options = self::taskSettings();
+
+        if (in_array(get_post_type(), $options['enabled_for'])) {
             global $wp_query;
-            $type = self::isSingleFullPage() ? 'single-page' : 'page';
+            $subpages = !empty($wp_query->query_vars['tkgt_page']) ? $wp_query->query_vars['tkgt_page'] : null;
+            $type = self::isSingleFullPage() ? 'single-' : '';
+
+            if (empty($type)) {
+                $type = self::isFullPage() ? 'full-' : '';
+            }
+
+            $type .= !empty($subpages) && $subpages !== $options['slug'] ?
+                array_search($subpages, $options['subpages']) : 'page';
 
             $native_template = TKGT_ROOT . "styles/default/{$type}.php";
 
-            if (!empty($wp_query->query_vars['tkgt_t']) || (self::isFullPage() && !self::isSingleFullPage())) {
+            /*if (!empty($wp_query->query_vars['tkgt_t']) || (self::isFullPage() && !self::isSingleFullPage())) {
                 return $native_template;
-            }
-
+            }*/
             $dirs = scandir(dirname($template_path));
 
             if (in_array('tkgt_template', $dirs)) {
@@ -457,6 +485,35 @@ class TK_GTaskPage
             }
         }
 
+        if (self::isSubpage()) {
+            $title = '';
+
+            switch ($this->getSubpageType()) {
+                case 'actions':
+                    $title = __('Actions', 'tkgt');
+                    break;
+
+                case 'suggestions':
+                    $title = __('Suggestions', 'tkgt');
+                    break;
+
+                case 'trash':
+                    $title = __('Trash', 'tkgt');
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (!empty($title)) {
+                $subpage = self::taskSettings(true)->subpages[$this->getSubpageType()];
+                $native[] = array('title' => $title,
+                    'href' => tkgt_is_fullpage() ?
+                        $this->getTaskFullpageLink(null,null, $subpage)
+                        : $this->getTaskPagePermalink(null, null, $subpage));
+            }
+        }
+
         if (!empty($items) && is_array($items)) {
             $items = array_merge($items, $native);
         } else {
@@ -585,12 +642,34 @@ class TK_GTaskPage
         return '';
     }
 
+    public function getSubpageType()
+    {
+        if (self::isSubpage()) {
+            global $wp_query;
+
+            return array_search($wp_query->query_vars['tkgt_page'], self::taskSettings(true)->subpages);
+        }
+
+        return false;
+    }
+
     static public function isFullPage()
     {
         global $wp_query;
         $fullpage_pattern = '/(tkgt_pid|tkgt_piid|tkgt_tid|tkgt_tiid|tkgt_pt|tkgt_pts)/';
 
         return boolval(count(preg_grep($fullpage_pattern, array_keys($wp_query->query_vars))));
+    }
+
+    static public function isSubpage()
+    {
+        global $wp_query;
+
+        if (!empty($wp_query->query_vars['tkgt_page'])) {
+            return in_array($wp_query->query_vars['tkgt_page'], self::taskSettings(true)->subpages);
+        }
+
+        return false;
     }
 
     static public function isSingleFullPage()
