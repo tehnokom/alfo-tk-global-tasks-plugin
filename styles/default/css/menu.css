@@ -1,0 +1,31 @@
+.tkgt-menu li {
+    display: inline-block;
+    margin: 0 0 0 15px;
+    padding: 5px 10px 5px 10px;
+}
+
+.tkgt-menu li:hover {
+    background-color: #eee;
+    border-radius: 5px;
+    transition: 0.3s all;
+}
+
+.tkgt-menu li a {
+    font-size: 17px;
+    color: #121212;
+}
+
+.tkgt-menu li a img {
+    position: relative;
+    top: 4px;
+    border-radius: 50%;
+}
+
+.tkgt-menu li a img:hover {
+    box-shadow: 0 0 5px #1799D7;
+    transition: 0.3s all;
+}
+
+.tkgt-menu li.current {
+    border-bottom: 2px solid #dfdfdf;
+}

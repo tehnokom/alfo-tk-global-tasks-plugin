@@ -1,0 +1,19 @@
+.tkgt-breadcrumbs {
+    font-size: 17px;
+}
+
+.tkgt-breadcrumbs li {
+    display: inline-block;
+}
+
+.tkgt-breadcrumbs li::before {
+    content: '>';
+}
+
+.tkgt-breadcrumbs li:nth-child(1)::before {
+    content: none;
+}
+
+.tkgt-breadcrumbs li:nth-last-child(1) > a {
+    color: #121212;
+}

@@ -1,0 +1,257 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-23 12:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#: admin/settings.php:16 lib/taskpage.php:50
+msgctxt "Admin menu"
+msgid "Tasks Settings"
+msgstr ""
+
+#: lib/taskpage.php:42
+msgctxt "Admin menu"
+msgid "TK Global Tasks"
+msgstr ""
+
+#: lib/taskpage.php:43
+msgctxt "Admin menu"
+msgid "Global Tasks"
+msgstr ""
+
+#: lib/taskpage.php:51
+msgctxt "Admin menu"
+msgid "TK Tasks"
+msgstr ""
+
+#: lib/taskpage.php:415 lib/taskpage.php:447
+msgid "Tasks"
+msgstr ""
+
+#: lib/taskpage.php:419
+msgid "Actions"
+msgstr ""
+
+#: lib/taskpage.php:423
+msgid "Suggestions"
+msgstr ""
+
+#: lib/taskpage.php:427
+msgid "Trash"
+msgstr ""
+
+#: lib/taskpage.php:455
+msgid "View task"
+msgstr ""
+
+#: lib/core.php:124 styles/default/single-page.php:28
+msgid "Direction"
+msgstr ""
+
+#: lib/core.php:128 styles/default/single-page.php:34
+msgid "Stage"
+msgstr ""
+
+#: lib/core.php:132 styles/default/single-page.php:19
+msgid "Task"
+msgstr ""
+
+#: lib/core.php:247
+msgid "No comments"
+msgstr ""
+
+#: lib/settings.php:24
+msgctxt "Admin Settings"
+msgid "Tasks Slug"
+msgstr ""
+
+#: lib/settings.php:31
+msgctxt "Admin Settings"
+msgid "URL of Detailed page"
+msgstr ""
+
+#: lib/settings.php:38
+msgctxt "Admin Settings"
+msgid "Types of Posts"
+msgstr ""
+
+#: lib/settings.php:45 lib/settings.php:123 lib/settings.php:163
+msgctxt "Admin Settings"
+msgid "Slugs for types of posts"
+msgstr ""
+
+#: lib/settings.php:52
+msgctxt "Admin Settings"
+msgid "Subpages slugs"
+msgstr ""
+
+#: lib/settings.php:69
+msgctxt "Admin Settings"
+msgid "Select the types of posts for which the task plan will be available"
+msgstr ""
+
+#: lib/settings.php:109
+msgctxt "Admin Settings"
+msgid "Here you can change the URL for a detailed task page"
+msgstr ""
+
+#: lib/settings.php:113
+msgctxt "Admin Settings"
+msgid "Task list URL"
+msgstr ""
+
+#: lib/settings.php:122 lib/settings.php:162
+msgctxt "Admin Settings"
+msgid "Post type identifier (string), values are taken from the setting"
+msgstr ""
+
+#: lib/settings.php:125 lib/settings.php:165
+msgctxt "Admin Settings"
+msgid "Global ID of the post (number)"
+msgstr ""
+
+#: lib/settings.php:127 lib/settings.php:167
+msgctxt "Admin Settings"
+msgid ""
+"The internal number of the post (number) must be used together with <b>"
+"%post_type%</b> or <b>%task_post_slug%</b>, in most cases equal to"
+msgstr ""
+
+#: lib/settings.php:129 lib/settings.php:169
+msgctxt "Admin Settings"
+msgid "Type of post (string)"
+msgstr ""
+
+#: lib/settings.php:133
+msgctxt "Admin Settings"
+msgid "Subpages URL"
+msgstr ""
+
+#: lib/settings.php:139
+msgctxt "Admin Settings"
+msgid "Warning!"
+msgstr ""
+
+#: lib/settings.php:141
+msgctxt "Admin Settings"
+msgid ""
+"Errors in configuration. To maintain the functionality, the default value "
+"will be used"
+msgstr ""
+
+#: lib/settings.php:144
+msgctxt "Admin Settings"
+msgid "Errors"
+msgstr ""
+
+#: lib/settings.php:158
+msgctxt "Admin Settings"
+msgid "Global Task ID (number)"
+msgstr ""
+
+#: lib/settings.php:159
+msgctxt "Admin Settings"
+msgid "Internal Task ID within the parent post (number)"
+msgstr ""
+
+#: lib/settings.php:180
+msgctxt "Admin Settings"
+msgid ""
+"Here you can determine the slug for a particular type of post. This slug "
+"will be used to identify the tasks of a certain type of post."
+msgstr ""
+
+#: lib/settings.php:197
+msgctxt "Admin Settings"
+msgid ""
+"This setting will be after you select at least one type of posts and save "
+"the settings."
+msgstr ""
+
+#: lib/settings.php:209
+msgctxt "Admin Settings"
+msgid "Specify the slugs for the respective subpages (including delimiters)"
+msgstr ""
+
+#: lib/settings.php:214
+msgid "Actions subpage"
+msgstr ""
+
+#: lib/settings.php:223
+msgid "Suggestions subpage"
+msgstr ""
+
+#: lib/settings.php:232
+msgid "Trash subpage"
+msgstr ""
+
+#: lib/settings.php:261 lib/settings.php:267
+msgctxt "Admin Settings"
+msgid "In the configuration, one of the identifiers must be present: "
+msgstr ""
+
+#: styles/default/menu.php:14
+msgid "Advanced view"
+msgstr ""
+
+#: styles/default/menu.php:19
+msgid "Open in new tab"
+msgstr ""
+
+#: styles/default/single-page.php:41
+msgid "Description"
+msgstr ""
+
+#: styles/default/single-page.php:50
+msgid "Creation date"
+msgstr ""
+
+#: styles/default/single-page.php:56
+msgid "Type of task"
+msgstr ""
+
+#: styles/default/single-page.php:60
+msgid "Start date"
+msgstr ""
+
+#: styles/default/single-page.php:67
+msgid "Periodicity"
+msgstr ""
+
+#: styles/default/single-page.php:71
+msgid "End date"
+msgstr ""
+
+#: styles/default/single-page.php:78
+msgid "Working messages"
+msgstr ""
+
+#. Name of the plugin
+msgid "TehnoKom Global Tasks"
+msgstr ""
+
+#. Description of the plugin
+msgid "Allows you to create a task plan for certain types of posts."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://github.com/tehnokom/alfo-tk-global-tasks-plugin"
+msgstr ""
+
+#. Author of the plugin
+msgid "Ravil Sarvaritdinov <ra9oaj@gmail.com>"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "http://github.com/RA9OAJ/"
+msgstr ""
